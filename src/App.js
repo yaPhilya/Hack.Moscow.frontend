@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Grid, GridColumn, GridRow } from 'semantic-ui-react'
 
-import { Scene } from './Scene.js'
-import { Sidebar } from './Sidebar.js'
+import { Scene } from './scene/Scene.js'
+import { Sidebar } from './sidebar/Sidebar.js'
 
 class App extends Component {
   render () {

@@ -54,12 +54,10 @@ export default canvas => {
   }
 
   function createSceneSubjects(scene) {
-    const sceneSubjects = [
+    return [
       new GeneralLights(scene),
       new SceneSubject(scene)
     ];
-
-    return sceneSubjects;
   }
 
   function update() {
