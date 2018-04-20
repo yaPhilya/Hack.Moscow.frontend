@@ -1,1 +1,6 @@
-# Hack.Moscow.frontend
+## Фронтенд
+
+## Использование
+```bash
+npm start
+```
