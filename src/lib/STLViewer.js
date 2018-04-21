@@ -6,18 +6,20 @@ import Paint from './Paint'
 class STLViewer extends Component {
   static propTypes = {
     className: PropTypes.string,
-    url: PropTypes.string,
+    models: PropTypes.arrayOf(
+      PropTypes.shape({
+        url: PropTypes.string,
+        color: PropTypes.string,
+      })),
+    backgroundColor: PropTypes.string,
     width: PropTypes.number,
     height: PropTypes.number,
-    backgroundColor: PropTypes.string,
-    modelColor: PropTypes.string,
     rotate: PropTypes.bool,
     orbitControls: PropTypes.bool,
   }
 
   static defaultProps = {
     backgroundColor: '#EAEAEA',
-    modelColor: '#B92C2C',
     height: 400,
     width: 400,
     rotate: true,
@@ -26,21 +28,14 @@ class STLViewer extends Component {
 
   componentDidMount () {
     let camera, scene, renderer, mesh, distance, controls
-    const {url, width, height, modelColor, backgroundColor, orbitControls} = this.props
-    let xDims, yDims, zDims
-    let component = this
-    let rotate = this.props.rotate
-    let paint = new Paint(this)
+    const {models, width, height, backgroundColor, orbitControls} = this.props
+    let {rotate} = this.props
+    const component = this
 
-    init()
-
-    /**
-     * The init method for the 3D scene
-     * @returns {void}
-     */
-    function init () {
-      paint.init()
-    }
+    const paint = new Paint(
+      component, models, width, height, backgroundColor, orbitControls, rotate,
+    )
+    paint.init()
 
     /**
      * Animate the scene
@@ -54,32 +49,14 @@ class STLViewer extends Component {
       if (this.props.orbitControls) {
         controls.update()
       }
-      render()
-    }
 
-    /**
-     * Render the scene after turning off the rotation
-     * @returns {void}
-     */
-    let orbitRender = () => {
-      if (rotate) {
-        rotate = false
-      }
-
-      render()
-    }
-
-    /**
-     * Render the scene
-     * @returns {void}
-     */
-    let render = () => {
       if (mesh && rotate) {
         mesh.rotation.z += 0.02
       }
 
       renderer.render(scene, camera)
     }
+
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -91,23 +68,16 @@ class STLViewer extends Component {
 
   componentWillUpdate (nextProps, nextState) {
     let camera, scene, renderer, mesh, distance, controls
-    const {url, width, height, modelColor, backgroundColor, orbitControls} = nextProps
-    let xDims, yDims, zDims
-    let component = this
-    let rotate = nextProps.rotate
 
-    this.props = nextProps
-    let paint = new Paint(this)
+    const {models, width, height, backgroundColor, orbitControls} = nextProps
+    let {rotate} = this.props
+    const component = this
+    console.log(models)
 
-    init()
-
-    /**
-     * The init method for the 3D scene
-     * @returns {void}
-     */
-    function init () {
-      paint.init()
-    }
+    const paint = new Paint(
+      component, models, width, height, backgroundColor, orbitControls, rotate,
+    )
+    paint.init()
 
     /**
      * Animate the scene
@@ -121,36 +91,18 @@ class STLViewer extends Component {
       if (nextProps.orbitControls) {
         controls.update()
       }
-      render()
-    }
 
-    /**
-     * Render the scene after turning off the rotation
-     * @returns {void}
-     */
-    let orbitRender = () => {
-      if (rotate) {
-        rotate = false
-      }
-
-      render()
-    }
-
-    /**
-     * Render the scene
-     * @returns {void}
-     */
-    let render = () => {
       if (mesh && rotate) {
         mesh.rotation.z += 0.02
       }
 
       renderer.render(scene, camera)
     }
+
   }
 
   render () {
-    const {width, height, modelColor} = this.props
+    const {width, height} = this.props
 
     return (
       <div
@@ -167,7 +119,7 @@ class STLViewer extends Component {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-          <ScaleLoader color={modelColor} size="16px"/>
+          <ScaleLoader size="16px"/>
         </div>
       </div>
     )

@@ -10,15 +10,18 @@ const magicSizes = {
   height: 800,
 }
 
-const Scene = ({models}) => <STLViewer
-  url={modelsStorage[models[0].name]}
-  width={magicSizes.width}
-  height={magicSizes.height}
-  modelColor='#B92C2C'
-  backgroundColor='#EAEAEA'
-  rotate={true}
-  orbitControls={true}
-/>
+const Scene = ({models}) =>
+  <STLViewer
+    models={models.map(model => ({
+      url: modelsStorage[model.name],
+      color: '#B92C2C',
+    }))}
+    width={magicSizes.width}
+    height={magicSizes.height}
+    backgroundColor='#EAEAEA'
+    rotate={true}
+    orbitControls={true}
+  />
 
 Scene.propTypes = {
   models: PropTypes.arrayOf(PropTypes.shape({
