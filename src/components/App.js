@@ -9,7 +9,7 @@ class App extends Component {
     return (
       <Grid columns={2} divided>
         <GridRow>
-          <GridColumn width={2}>
+          <GridColumn width={4}>
             <VisibleSidebar/>
           </GridColumn>
           <GridColumn width={8}>

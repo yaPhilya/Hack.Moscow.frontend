@@ -8,10 +8,16 @@ const modelsStorage = {
   'bottle': bottleModel,
 }
 
+// Костыль, чтобы работало без пробрасывания размеров
+const magicSizes = {
+  width: 1200,
+  height: 800
+}
+
 const Scene = ({models}) => <STLViewer
   url={modelsStorage[models[0].name]}
-  width={400}
-  height={400}
+  width={magicSizes.width}
+  height={magicSizes.height}
   modelColor='#B92C2C'
   backgroundColor='#EAEAEA'
   rotate={true}
