@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Grid, GridColumn, GridRow } from 'semantic-ui-react'
 
-import { MainView } from './scene/MainView.js'
-import { Sidebar } from './sidebar/Sidebar.js'
+import { Scene } from './Scene.js'
+import { Sidebar } from './Sidebar.js'
 
 class App extends Component {
   render () {
@@ -13,7 +13,7 @@ class App extends Component {
             <Sidebar/>
           </GridColumn>
           <GridColumn width={8}>
-            <MainView parent={this}/>
+            <Scene parent={this}/>
           </GridColumn>
         </GridRow>
       </Grid>

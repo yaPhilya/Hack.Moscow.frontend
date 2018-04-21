@@ -7,7 +7,7 @@ const models = {
   'bottle': bottleModel,
 }
 
-export const MainView = () => <STLViewer
+export const Scene = () => <STLViewer
   url={models.bottle}
   width={400}
   height={400}
