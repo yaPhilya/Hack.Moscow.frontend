@@ -15,17 +15,23 @@ const Scene = ({models}) =>
     models={models.map(model => ({
       url: modelsStorage[model.name],
       color: '#B92C2C',
+      x: model.x,
+      y: model.y,
+      z: model.z,
     }))}
     width={magicSizes.width}
     height={magicSizes.height}
     backgroundColor='#EAEAEA'
-    rotate={true}
     orbitControls={true}
   />
 
 Scene.propTypes = {
   models: PropTypes.arrayOf(PropTypes.shape({
       name: PropTypes.string,
+      color: PropTypes.string,
+      x: PropTypes.number,
+      y: PropTypes.number,
+      z: PropTypes.number,
     }),
   ),
 }

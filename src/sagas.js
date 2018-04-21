@@ -7,6 +7,15 @@ function * fetchAsync (action) {
   yield put(setModelsCreator([
     {
       name: action.text,
+      x: 0,
+      y: 0,
+      z: 0,
+    },
+    {
+      name: 'apple',
+      x: 100,
+      y: 100,
+      z: 0,
     },
   ]))
 }

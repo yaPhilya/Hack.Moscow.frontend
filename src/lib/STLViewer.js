@@ -10,11 +10,13 @@ class STLViewer extends Component {
       PropTypes.shape({
         url: PropTypes.string,
         color: PropTypes.string,
+        x: PropTypes.number,
+        y: PropTypes.number,
+        z: PropTypes.number,
       })),
     backgroundColor: PropTypes.string,
     width: PropTypes.number,
     height: PropTypes.number,
-    rotate: PropTypes.bool,
     orbitControls: PropTypes.bool,
   }
 
@@ -22,18 +24,16 @@ class STLViewer extends Component {
     backgroundColor: '#EAEAEA',
     height: 400,
     width: 400,
-    rotate: true,
     orbitControls: true,
   }
 
   componentDidMount () {
     let camera, scene, renderer, mesh, distance, controls
     const {models, width, height, backgroundColor, orbitControls} = this.props
-    let {rotate} = this.props
     const component = this
 
     const paint = new Paint(
-      component, models, width, height, backgroundColor, orbitControls, rotate,
+      component, models, width, height, backgroundColor, orbitControls,
     )
     paint.init()
 
@@ -43,15 +43,8 @@ class STLViewer extends Component {
      */
     let animate = () => {
       // note: three.js includes requestAnimationFrame shim
-      if (rotate) {
-        requestAnimationFrame(animate)
-      }
       if (this.props.orbitControls) {
         controls.update()
-      }
-
-      if (mesh && rotate) {
-        mesh.rotation.z += 0.02
       }
 
       renderer.render(scene, camera)
@@ -70,12 +63,11 @@ class STLViewer extends Component {
     let camera, scene, renderer, mesh, distance, controls
 
     const {models, width, height, backgroundColor, orbitControls} = nextProps
-    let {rotate} = this.props
     const component = this
     console.log(models)
 
     const paint = new Paint(
-      component, models, width, height, backgroundColor, orbitControls, rotate,
+      component, models, width, height, backgroundColor, orbitControls,
     )
     paint.init()
 
@@ -85,15 +77,8 @@ class STLViewer extends Component {
      */
     let animate = () => {
       // note: three.js includes requestAnimationFrame shim
-      if (rotate) {
-        requestAnimationFrame(animate)
-      }
       if (nextProps.orbitControls) {
         controls.update()
-      }
-
-      if (mesh && rotate) {
-        mesh.rotation.z += 0.02
       }
 
       renderer.render(scene, camera)

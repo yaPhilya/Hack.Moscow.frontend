@@ -4,22 +4,18 @@ import ReactDOM from 'react-dom'
 let OrbitControls = require('three-orbit-controls')(THREE)
 
 class Paint {
-  constructor (
-    context, models, width, height, backgroundColor, orbitControls, rotate) {
+  constructor (context, models, width, height, backgroundColor, orbitControls) {
     this.component = context
     this.width = width
     this.height = height
     this.backgroundColor = backgroundColor
     this.orbitControls = orbitControls
-    this.rotate = rotate
 
-    this.url = models[0].url
-    this.modelColor = models[0].color
+    this.models = models
 
     this.camera
     this.scene
     this.renderer
-    this.mesh
     this.distance
     this.controls
     this.xDims
@@ -45,54 +41,55 @@ class Paint {
     let loader = new THREE.STLLoader()
     loader.crossOrigin = ''
 
-    loader.load(this.url, (geometry) => {
+    this.models.forEach((model) => {
+      loader.load(model.url, (geometry) => {
 
-      // Calculate mesh noramls for MeshLambertMaterial.
-      geometry.computeFaceNormals()
-      geometry.computeVertexNormals()
+        // Calculate mesh noramls for MeshLambertMaterial.
+        geometry.computeFaceNormals()
+        geometry.computeVertexNormals()
 
-      // Center the object
-      geometry.center()
+        // Center the object
+        geometry.center()
 
-      this.mesh = new THREE.Mesh(
-        geometry,
-        new THREE.MeshLambertMaterial({
-            overdraw: true,
-            color: this.modelColor,
-          },
-        ))
-      // Set the object's dimensions
-      geometry.computeBoundingBox()
-      this.xDims = geometry.boundingBox.max.x - geometry.boundingBox.min.x
-      this.yDims = geometry.boundingBox.max.y - geometry.boundingBox.min.y
-      this.zDims = geometry.boundingBox.max.z - geometry.boundingBox.min.z
+        let mesh = new THREE.Mesh(
+          geometry,
+          new THREE.MeshLambertMaterial({
+              overdraw: true,
+              color: model.color,
+            },
+          ))
+        mesh.position.x = model.x
+        mesh.position.y = model.y
+        mesh.position.z = model.z
 
-      if (this.rotate) {
-        this.mesh.rotation.x = 5
-        this.mesh.rotation.z = .25
-      }
+        // Set the object's dimensions
+        geometry.computeBoundingBox()
+        this.xDims = geometry.boundingBox.max.x - geometry.boundingBox.min.x
+        this.yDims = geometry.boundingBox.max.y - geometry.boundingBox.min.y
+        this.zDims = geometry.boundingBox.max.z - geometry.boundingBox.min.z
 
-      this.scene.add(this.mesh)
+        this.scene.add(mesh)
 
-      this.addCamera()
-      this.addInteractionControls()
-      this.addToReactComponent()
+        this.addCamera()
+        this.addInteractionControls()
+        this.addToReactComponent()
 
-      // Start the animation
-      this.animate()
+        // Start the animation
+        this.animate()
+      })
     })
   }
 
   addCamera () {
     // Add the camera
-    this.camera = new THREE.PerspectiveCamera(30, this.width / this.height, 1,
-      this.distance)
+    this.camera = new THREE.PerspectiveCamera(
+      30, this.width / this.height, 1, this.distance)
     this.camera.position.set(0, 0,
       Math.max(this.xDims * 3, this.yDims * 3, this.zDims * 3))
 
     this.scene.add(this.camera)
 
-    this.renderer = new THREE.WebGLRenderer() //new THREE.CanvasRenderer();
+    this.renderer = new THREE.WebGLRenderer()
     this.renderer.setSize(this.width, this.height)
     this.renderer.setClearColor(this.backgroundColor, 1)
   }
@@ -119,9 +116,6 @@ class Paint {
    */
   animate () {
     // note: three.js includes requestAnimationFrame shim
-    if (this.rotate) {
-      requestAnimationFrame(this.animate.bind(this))
-    }
     if (this.orbitControls) {
       this.controls.update()
     }
@@ -133,10 +127,6 @@ class Paint {
    * @returns {void}
    */
   orbitRender () {
-    if (this.rotate) {
-      this.rotate = false
-    }
-
     this.render()
   }
 
@@ -145,10 +135,6 @@ class Paint {
    * @returns {void}
    */
   render () {
-    if (this.mesh && this.rotate) {
-      this.mesh.rotation.z += 0.02
-    }
-
     this.renderer.render(this.scene, this.camera)
   }
 }
