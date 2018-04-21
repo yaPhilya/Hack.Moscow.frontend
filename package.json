@@ -3,15 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "three": "^0.92.0",
-    "react": "^15.0.0",
-    "redux": "^4.0.0",
-    "react-redux": "^5.0.7",
-    "redux-saga": "^0.16.0",
+    "three": "^0.72.0",
+    "three-orbit-controls": "^72.0.0",
+    "halogenium": "^2.2.3",
     "prop-types": "^15.6.1",
+    "react": "^15.0.0",
     "react-dom": "^15.0.0",
-    "semantic-ui-css": "^2.3.1",
+    "react-redux": "^5.0.7",
     "react-scripts": "1.1.4",
+    "redux": "^4.0.0",
+    "redux-saga": "^0.16.0",
+    "semantic-ui-css": "^2.3.1",
     "semantic-ui-react": "^0.79.1"
   },
   "scripts": {
