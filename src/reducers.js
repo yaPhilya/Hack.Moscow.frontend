@@ -1,4 +1,4 @@
-import { SET_MODELS, FETCH_EXTRACT_REQUEST } from './actions'
+import { SET_MODELS } from './actions'
 
 const initialState = {
   models: [
