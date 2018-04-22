@@ -18,9 +18,10 @@ class Paint {
     this.renderer
     this.distance
     this.controls
-    this.xDims
-    this.yDims
-    this.zDims
+
+    this.xDims = 0
+    this.yDims = 0
+    this.zDims = 0
   }
 
   init () {
@@ -42,7 +43,7 @@ class Paint {
     loader.crossOrigin = ''
 
     this.models.forEach((model) => {
-      loader.load(model.url, (geometry) => {
+      return loader.load(model.url, (geometry) => {
 
         // Calculate mesh noramls for MeshLambertMaterial.
         geometry.computeFaceNormals()
@@ -64,14 +65,17 @@ class Paint {
 
         // Set the object's dimensions
         geometry.computeBoundingBox()
-        this.xDims = geometry.boundingBox.max.x - geometry.boundingBox.min.x
-        this.yDims = geometry.boundingBox.max.y - geometry.boundingBox.min.y
-        this.zDims = geometry.boundingBox.max.z - geometry.boundingBox.min.z
+        this.xDims = Math.max(this.xDims, geometry.boundingBox.max.x -
+          geometry.boundingBox.min.x)
+        this.yDims = Math.max(this.yDims, geometry.boundingBox.max.y -
+          geometry.boundingBox.min.y)
+        this.zDims = Math.max(this.yDims, geometry.boundingBox.max.z -
+          geometry.boundingBox.min.z)
 
         this.scene.add(mesh)
 
-        this.addCamera()
-        this.addInteractionControls()
+        this.updateCamera()
+        this.updateInteractionControls()
         this.addToReactComponent()
 
         // Start the animation
@@ -80,7 +84,7 @@ class Paint {
     })
   }
 
-  addCamera () {
+  updateCamera () {
     // Add the camera
     this.camera = new THREE.PerspectiveCamera(
       30, this.width / this.height, 1, this.distance)
@@ -94,7 +98,7 @@ class Paint {
     this.renderer.setClearColor(this.backgroundColor, 1)
   }
 
-  addInteractionControls () {
+  updateInteractionControls () {
     // Add controls for mouse interaction
     if (this.orbitControls) {
       this.controls = new OrbitControls(this.camera,
