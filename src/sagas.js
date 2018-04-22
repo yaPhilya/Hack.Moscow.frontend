@@ -1,8 +1,8 @@
-import { all, takeEvery, put, call } from 'redux-saga/effects'
+import { all, call, put, takeEvery } from 'redux-saga/effects'
 import { FETCH_EXTRACT_REQUEST, setModelsCreator } from './actions'
 import { doParseRequest } from './api'
 
-function * pasrseAsync (action) {
+function * parseAsync (action) {
   const resp = yield call(doParseRequest, action.text)
   const models = resp.data
   console.log(models)
@@ -11,7 +11,7 @@ function * pasrseAsync (action) {
 }
 
 function * extractSaga () {
-  yield takeEvery(FETCH_EXTRACT_REQUEST, pasrseAsync)
+  yield takeEvery(FETCH_EXTRACT_REQUEST, parseAsync)
 }
 
 export default function * rootSaga () {
