@@ -6,16 +6,17 @@ let OrbitControls = require('three-orbit-controls')(THREE)
 class Paint {
   constructor (context, models, width, height, backgroundColor) {
     this.component = context
+    this.models = models
     this.width = width
     this.height = height
     this.backgroundColor = backgroundColor
 
-    this.models = models
+    this.scene = new THREE.Scene()
 
-    this.camera
-    this.scene
+    this.camera = Paint.createCamera({width, height})
+    this.scene.add(this.camera)
+
     this.renderer
-    this.distance
     this.controls
 
     this.xDims = 0
@@ -24,9 +25,6 @@ class Paint {
   }
 
   init () {
-    this.scene = new THREE.Scene()
-    this.distance = 10000
-
     let directionalLight = Paint.createLight({x: 0, y: 0, z: 1})
     this.scene.add(directionalLight)
 
@@ -70,11 +68,6 @@ class Paint {
         mesh.position.z = model.z
 
         this.scene.add(mesh)
-
-        this.camera = Paint.createCamera({
-          width: this.width, height: this.height,
-        })
-        this.scene.add(this.camera)
 
         this.renderer = Paint.createRenderer({
           width: this.width, height: this.height,
