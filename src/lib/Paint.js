@@ -87,7 +87,8 @@ class Paint {
         this.addToReactComponent()
 
         // Start the animation
-        this.animate()
+        this.controls.update()
+        this.render()
       })
     })
   }
@@ -122,25 +123,6 @@ class Paint {
     ReactDOM.findDOMNode(this.component).replaceChild(this.renderer.domElement,
       ReactDOM.findDOMNode(this.component).firstChild)
   }
-
-  /**
-   * Animate the scene
-   * @returns {void}
-   */
-  animate () {
-    // note: three.js includes requestAnimationFrame shim
-    this.controls.update()
-    this.render()
-  }
-
-  /**
-   * Render the scene after turning off the rotation
-   * @returns {void}
-   */
-  orbitRender () {
-    this.render()
-  }
-
   /**
    * Render the scene
    * @returns {void}
