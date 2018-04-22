@@ -18,6 +18,9 @@ class Paint {
     this.renderer
     this.distance
     this.controls
+    this.xDims
+    this.yDims
+    this.zDims
   }
 
   init () {
@@ -41,6 +44,7 @@ class Paint {
     this.models.forEach((model) => {
       loader.load(model.url, (geometry) => {
 
+        // Calculate mesh noramls for MeshLambertMaterial.
         geometry.computeFaceNormals()
         geometry.computeVertexNormals()
 
@@ -58,23 +62,30 @@ class Paint {
         mesh.position.y = model.y
         mesh.position.z = model.z
 
+        // Set the object's dimensions
+        geometry.computeBoundingBox()
+        this.xDims = geometry.boundingBox.max.x - geometry.boundingBox.min.x
+        this.yDims = geometry.boundingBox.max.y - geometry.boundingBox.min.y
+        this.zDims = geometry.boundingBox.max.z - geometry.boundingBox.min.z
+
         this.scene.add(mesh)
+
+        this.addCamera()
+        this.addInteractionControls()
+        this.addToReactComponent()
+
+        // Start the animation
+        this.animate()
       })
     })
-
-    this.addCamera()
-    this.addInteractionControls()
-    this.addToReactComponent()
-
-    // Start the animation
-    this.animate()
   }
 
   addCamera () {
     // Add the camera
     this.camera = new THREE.PerspectiveCamera(
       30, this.width / this.height, 1, this.distance)
-    this.camera.position.set(0, 0, 100)
+    this.camera.position.set(0, 0,
+      Math.max(this.xDims * 3, this.yDims * 3, this.zDims * 3))
 
     this.scene.add(this.camera)
 
