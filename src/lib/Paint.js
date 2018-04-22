@@ -15,12 +15,6 @@ class Paint {
     this.scene.add(this.camera)
 
     this.renderer = Paint.createRenderer({width, height}, this.backgroundColor)
-
-    this.controls
-
-    this.xDims = 0
-    this.yDims = 0
-    this.zDims = 0
   }
 
   init () {
@@ -68,6 +62,7 @@ class Paint {
 
         this.scene.add(mesh)
 
+        // I dunno why controls must be here
         this.controls = Paint.createControls(this.component, this.camera,
           () => this.render(),
         )
