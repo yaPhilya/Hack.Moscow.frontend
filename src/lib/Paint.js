@@ -4,12 +4,11 @@ import ReactDOM from 'react-dom'
 let OrbitControls = require('three-orbit-controls')(THREE)
 
 class Paint {
-  constructor (context, models, width, height, backgroundColor, orbitControls) {
+  constructor (context, models, width, height, backgroundColor) {
     this.component = context
     this.width = width
     this.height = height
     this.backgroundColor = backgroundColor
-    this.orbitControls = orbitControls
 
     this.models = models
 
@@ -25,17 +24,24 @@ class Paint {
   }
 
   init () {
-    //Detector.addGetWebGLMessage();
     this.scene = new THREE.Scene()
     this.distance = 10000
-    let directionalLight = new THREE.DirectionalLight(0xffffff)
-    directionalLight.position.x = 0
-    directionalLight.position.y = 0
-    directionalLight.position.z = 1
-    directionalLight.position.normalize()
+
+    let directionalLight = Paint.createLight({x: 0, y: 0, z: 1})
     this.scene.add(directionalLight)
 
     this.addSTLToScene()
+  }
+
+  static createLight (pos) {
+    let light = new THREE.DirectionalLight(0xffffff)
+    light.position.x = pos.x
+    light.position.y = pos.y
+    light.position.z = pos.z
+
+    light.position.normalize()
+
+    return light
   }
 
   addSTLToScene () {
@@ -99,13 +105,10 @@ class Paint {
   }
 
   updateInteractionControls () {
-    // Add controls for mouse interaction
-    if (this.orbitControls) {
-      this.controls = new OrbitControls(this.camera,
-        ReactDOM.findDOMNode(this.component))
-      this.controls.enableKeys = false
-      this.controls.addEventListener('change', this.orbitRender.bind(this))
-    }
+    this.controls = new OrbitControls(this.camera,
+      ReactDOM.findDOMNode(this.component))
+    this.controls.enableKeys = false
+    this.controls.addEventListener('change', this.orbitRender.bind(this))
   }
 
   addToReactComponent () {
@@ -120,9 +123,7 @@ class Paint {
    */
   animate () {
     // note: three.js includes requestAnimationFrame shim
-    if (this.orbitControls) {
-      this.controls.update()
-    }
+    this.controls.update()
     this.render()
   }
 
