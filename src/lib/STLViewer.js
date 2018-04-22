@@ -33,10 +33,7 @@ class STLViewer extends Component {
     const {models, size, backgroundColor} = this.props
     const component = this
 
-    const paint = new Paint(
-      component, models, size.width, size.height, backgroundColor,
-    )
-    paint.init()
+    new Paint(component, models, size.width, size.height, backgroundColor)
 
     return (
       <div

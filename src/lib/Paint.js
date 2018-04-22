@@ -11,15 +11,17 @@ class Paint {
 
     this.scene = new THREE.Scene()
 
+    // Container for all objects
+    this.group = new THREE.Group()
+    this.scene.add(this.group)
+
     this.camera = Paint.createCamera({width, height})
     this.scene.add(this.camera)
 
-    this.renderer = Paint.createRenderer({width, height}, this.backgroundColor)
-  }
+    let light = Paint.createLight({x: 0, y: 0, z: 1})
+    this.scene.add(light)
 
-  init () {
-    let directionalLight = Paint.createLight({x: 0, y: 0, z: 1})
-    this.scene.add(directionalLight)
+    this.renderer = Paint.createRenderer({width, height}, this.backgroundColor)
 
     this.addSTLToScene()
   }
@@ -60,7 +62,7 @@ class Paint {
         mesh.position.y = model.y
         mesh.position.z = model.z
 
-        this.scene.add(mesh)
+        this.group.add(mesh)
 
         // I dunno why controls must be here
         this.controls = Paint.createControls(this.component, this.camera,
@@ -69,7 +71,8 @@ class Paint {
 
         this.addToReactComponent()
 
-        // Start the animation
+        const helper = new THREE.BoundingBoxHelper(this.group)
+        this.camera.position.set(0, 0, 300)
         this.controls.update()
         this.render()
       })
