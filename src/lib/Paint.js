@@ -80,6 +80,11 @@ class Paint {
 
         this.scene.add(mesh)
 
+        this.camera = Paint.createCamera(
+          {width: this.width, height: this.height},
+        )
+        this.scene.add(this.camera)
+
         this.updateCamera()
         this.updateInteractionControls()
         this.addToReactComponent()
@@ -90,15 +95,16 @@ class Paint {
     })
   }
 
-  updateCamera () {
+  static createCamera (size) {
     // Add the camera
-    this.camera = new THREE.PerspectiveCamera(
-      30, this.width / this.height, 1, this.distance)
-    this.camera.position.set(0, 0,
-      Math.max(this.xDims * 3, this.yDims * 3, this.zDims * 3))
+    const camera = new THREE.PerspectiveCamera(
+      30, size.width / size.height, 1, 10000)
+    camera.position.set(0, 0, 300)
 
-    this.scene.add(this.camera)
+    return camera
+  }
 
+  updateCamera () {
     this.renderer = new THREE.WebGLRenderer()
     this.renderer.setSize(this.width, this.height)
     this.renderer.setClearColor(this.backgroundColor, 1)
