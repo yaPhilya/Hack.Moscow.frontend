@@ -13,11 +13,8 @@ const magicSizes = {
 const Scene = ({models}) =>
   <STLViewer
     models={models.map(model => ({
+      ...model,
       url: modelsStorage[model.name],
-      color: '#B92C2C',
-      x: model.x,
-      y: model.y,
-      z: model.z,
     }))}
     width={magicSizes.width}
     height={magicSizes.height}

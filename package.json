@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.18.0",
     "three": "^0.72.0",
     "three-orbit-controls": "^72.0.0",
     "halogenium": "^2.2.3",

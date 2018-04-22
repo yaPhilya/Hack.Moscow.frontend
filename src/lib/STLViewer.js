@@ -64,7 +64,6 @@ class STLViewer extends Component {
 
     const {models, width, height, backgroundColor, orbitControls} = nextProps
     const component = this
-    console.log(models)
 
     const paint = new Paint(
       component, models, width, height, backgroundColor, orbitControls,
