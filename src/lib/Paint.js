@@ -69,15 +69,6 @@ class Paint {
         mesh.position.y = model.y
         mesh.position.z = model.z
 
-        // Set the object's dimensions
-        geometry.computeBoundingBox()
-        this.xDims = Math.max(this.xDims, geometry.boundingBox.max.x -
-          geometry.boundingBox.min.x)
-        this.yDims = Math.max(this.yDims, geometry.boundingBox.max.y -
-          geometry.boundingBox.min.y)
-        this.zDims = Math.max(this.yDims, geometry.boundingBox.max.z -
-          geometry.boundingBox.min.z)
-
         this.scene.add(mesh)
 
         this.camera = Paint.createCamera({
@@ -89,7 +80,10 @@ class Paint {
           width: this.width, height: this.height,
         }, this.backgroundColor)
 
-        this.updateInteractionControls()
+        this.controls = Paint.createControls(this.component, this.camera,
+          () => this.render(),
+        )
+
         this.addToReactComponent()
 
         // Start the animation
@@ -115,11 +109,12 @@ class Paint {
     return renderer
   }
 
-  updateInteractionControls () {
-    this.controls = new OrbitControls(this.camera,
-      ReactDOM.findDOMNode(this.component))
-    this.controls.enableKeys = false
-    this.controls.addEventListener('change', this.orbitRender.bind(this))
+  static createControls (component, camera, renderFunc) {
+    const controls = new OrbitControls(camera, ReactDOM.findDOMNode(component))
+    controls.enableKeys = false
+    controls.addEventListener('change', renderFunc)
+
+    return controls
   }
 
   addToReactComponent () {
