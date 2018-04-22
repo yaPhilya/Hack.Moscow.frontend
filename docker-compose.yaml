@@ -1,6 +1,12 @@
 version: '3'
 services:
-  server:
+  frontend:
+    build: .
     image: strangeducttape/bluecat_frontend
     ports:
       - "80:80"
+  backend:
+    image: strangeducttape/bluecat_backend
+    ports:
+      - "5000:5000"
+    command: "gunicorn --bind 0.0.0.0:5000 server.production:app --log-file -"
