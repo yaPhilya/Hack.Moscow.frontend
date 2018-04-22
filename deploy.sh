@@ -3,7 +3,7 @@
 set -e
 
 docker build -t strangeducttape/bluecat_frontend .
-docker push strangeducttape /bluecat_frontend
+docker push strangeducttape/bluecat_frontend
 
 scp ./docker-compose.yaml root@188.246.233.30:/app/frontend
 
