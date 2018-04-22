@@ -80,12 +80,15 @@ class Paint {
 
         this.scene.add(mesh)
 
-        this.camera = Paint.createCamera(
-          {width: this.width, height: this.height},
-        )
+        this.camera = Paint.createCamera({
+          width: this.width, height: this.height,
+        })
         this.scene.add(this.camera)
 
-        this.updateCamera()
+        this.renderer = Paint.createRenderer({
+          width: this.width, height: this.height,
+        }, this.backgroundColor)
+
         this.updateInteractionControls()
         this.addToReactComponent()
 
@@ -104,10 +107,12 @@ class Paint {
     return camera
   }
 
-  updateCamera () {
-    this.renderer = new THREE.WebGLRenderer()
-    this.renderer.setSize(this.width, this.height)
-    this.renderer.setClearColor(this.backgroundColor, 1)
+  static createRenderer (size, backgroundColor) {
+    const renderer = new THREE.WebGLRenderer()
+    renderer.setSize(size.width, size.height)
+    renderer.setClearColor(backgroundColor, 1)
+
+    return renderer
   }
 
   updateInteractionControls () {
