@@ -7,8 +7,6 @@ class Paint {
   constructor (context, models, width, height, backgroundColor) {
     this.component = context
     this.models = models
-    this.width = width
-    this.height = height
     this.backgroundColor = backgroundColor
 
     this.scene = new THREE.Scene()
@@ -16,7 +14,8 @@ class Paint {
     this.camera = Paint.createCamera({width, height})
     this.scene.add(this.camera)
 
-    this.renderer
+    this.renderer = Paint.createRenderer({width, height}, this.backgroundColor)
+
     this.controls
 
     this.xDims = 0
@@ -69,10 +68,6 @@ class Paint {
 
         this.scene.add(mesh)
 
-        this.renderer = Paint.createRenderer({
-          width: this.width, height: this.height,
-        }, this.backgroundColor)
-
         this.controls = Paint.createControls(this.component, this.camera,
           () => this.render(),
         )
@@ -116,6 +111,7 @@ class Paint {
     ReactDOM.findDOMNode(this.component).replaceChild(this.renderer.domElement,
       ReactDOM.findDOMNode(this.component).firstChild)
   }
+
   /**
    * Render the scene
    * @returns {void}
