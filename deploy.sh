@@ -2,8 +2,8 @@
 
 set -e
 
-docker build -t bluecat_frontend .
-docker push bluecat_frontend
+docker build -t structducttape/bluecat_frontend .
+docker push structducttape/bluecat_frontend
 
 scp ./docker-compose.yaml root@188.246.233.30:/app/frontend
 
