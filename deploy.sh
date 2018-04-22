@@ -2,15 +2,9 @@
 
 set -e
 
-npm run build
+docker build -t strangeducttape/bluecat_frontend .
+docker push strangeducttape/bluecat_frontend
 
-ARCHIVE=frontend.tar.gz
+scp ./docker-compose.yaml root@188.246.233.30:/app/frontend
 
-tar cvzf ${ARCHIVE} build
-
-# kek, CI/CD (:
-scp -r ${ARCHIVE} root@188.246.233.30:/app
-ssh root@188.246.233.30 "cd /app && rm -r frontend && tar xvzf ${ARCHIVE} && mv build frontend && rm ${ARCHIVE}"
-
-# nginx
-scp ./nginx/frontend.nginx root@188.246.233.30:/etc/nginx/sites-enabled
+ssh root@188.246.233.30 "cd /app/frontend && docker stack deploy --compose-file docker-compose.yaml frontend"
