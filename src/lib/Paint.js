@@ -71,8 +71,17 @@ class Paint {
 
         this.addToReactComponent()
 
-        const helper = new THREE.BoundingBoxHelper(this.group)
-        this.camera.position.set(0, 0, 300)
+        const boundingBox = new THREE.BoundingBoxHelper(this.group)
+        boundingBox.update()
+
+        const boxSize = boundingBox.box.size()
+
+        this.camera.position.set(0, 0, 3 * Math.max(
+          boxSize.x,
+          boxSize.y,
+          boxSize.z,
+        ))
+
         this.controls.update()
         this.render()
       })
