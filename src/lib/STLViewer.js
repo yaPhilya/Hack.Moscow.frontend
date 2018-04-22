@@ -5,7 +5,6 @@ import Paint from './Paint'
 
 class STLViewer extends Component {
   static propTypes = {
-    className: PropTypes.string,
     models: PropTypes.arrayOf(
       PropTypes.shape({
         url: PropTypes.string,
@@ -14,48 +13,36 @@ class STLViewer extends Component {
         y: PropTypes.number,
         z: PropTypes.number,
       })),
+    size: PropTypes.shape({
+      width: PropTypes.number,
+      height: PropTypes.number,
+    }),
     backgroundColor: PropTypes.string,
-    width: PropTypes.number,
-    height: PropTypes.number,
-    orbitControls: PropTypes.bool,
   }
 
   static defaultProps = {
+    models: [],
     backgroundColor: '#EAEAEA',
-    height: 400,
-    width: 400,
-    orbitControls: true,
-  }
-
-  componentDidMount () {
-    const {models, width, height, backgroundColor, orbitControls} = this.props
-    const component = this
-
-    const paint = new Paint(
-      component, models, width, height, backgroundColor, orbitControls,
-    )
-    paint.init()
-  }
-
-  componentWillUpdate (nextProps, nextState) {
-    const {models, width, height, backgroundColor, orbitControls} = nextProps
-    const component = this
-
-    const paint = new Paint(
-      component, models, width, height, backgroundColor, orbitControls,
-    )
-    paint.init()
+    size: {
+      height: 400,
+      width: 400,
+    },
   }
 
   render () {
-    const {width, height} = this.props
+    const {models, size, backgroundColor} = this.props
+    const component = this
+
+    const paint = new Paint(
+      component, models, size.width, size.height, backgroundColor, true,
+    )
+    paint.init()
 
     return (
       <div
-        className={this.props.className}
         style={{
-          width: width,
-          height: height,
+          width: size.width,
+          height: size.height,
           overflow: 'hidden',
         }}
       >

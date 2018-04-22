@@ -16,10 +16,11 @@ const Scene = ({models}) =>
       ...model,
       url: modelsStorage[model.name],
     }))}
-    width={magicSizes.width}
-    height={magicSizes.height}
+    size={{
+      width: magicSizes.width,
+      height: magicSizes.height,
+    }}
     backgroundColor='#EAEAEA'
-    orbitControls={true}
   />
 
 Scene.propTypes = {
