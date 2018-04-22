@@ -28,7 +28,6 @@ class STLViewer extends Component {
   }
 
   componentDidMount () {
-    let camera, scene, renderer, mesh, distance, controls
     const {models, width, height, backgroundColor, orbitControls} = this.props
     const component = this
 
@@ -36,32 +35,9 @@ class STLViewer extends Component {
       component, models, width, height, backgroundColor, orbitControls,
     )
     paint.init()
-
-    /**
-     * Animate the scene
-     * @returns {void}
-     */
-    let animate = () => {
-      // note: three.js includes requestAnimationFrame shim
-      if (this.props.orbitControls) {
-        controls.update()
-      }
-
-      renderer.render(scene, camera)
-    }
-
-  }
-
-  shouldComponentUpdate (nextProps, nextState) {
-    if (JSON.stringify(nextProps) === JSON.stringify(this.props)) {
-      return false
-    }
-    return true
   }
 
   componentWillUpdate (nextProps, nextState) {
-    let camera, scene, renderer, mesh, distance, controls
-
     const {models, width, height, backgroundColor, orbitControls} = nextProps
     const component = this
 
@@ -69,20 +45,6 @@ class STLViewer extends Component {
       component, models, width, height, backgroundColor, orbitControls,
     )
     paint.init()
-
-    /**
-     * Animate the scene
-     * @returns {void}
-     */
-    let animate = () => {
-      // note: three.js includes requestAnimationFrame shim
-      if (nextProps.orbitControls) {
-        controls.update()
-      }
-
-      renderer.render(scene, camera)
-    }
-
   }
 
   render () {
