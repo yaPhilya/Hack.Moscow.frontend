@@ -1,7 +1,10 @@
 FROM node AS build
 WORKDIR /app
-ADD . .
+ADD package.json package.json
+ADD package-lock.json package-lock.json
 RUN npm install
+
+ADD . .
 RUN npm run build
 
 FROM nginx:stable
